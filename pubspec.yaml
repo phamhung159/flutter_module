@@ -1,0 +1,101 @@
+name: flutter_module
+description: "A new Flutter module project."
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+#
+# This version is used _only_ for the Runner app, which is used if you just do
+# a `flutter run` or a `flutter make-host-app-editable`. It has no impact
+# on any other native host app that you embed your Flutter project into.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #API
+  dio: ^5.7.0 
+  retrofit: ^4.9.0
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+  logger: ^2.6.0 
+  permission_handler: ^12.0.0+1
+  synchronized:
+  equatable: ^2.0.7
+
+  #BLOC
+  flutter_bloc: ^9.0.0
+
+  #DEPENDENCY INJECTION
+  get_it: ^7.6.0
+  injectable: ^2.1.0
+
+  #RESOURCE
+  flutter_screenutil: ^5.9.0
+  flutter_svg: ^2.0.17
+  intl: 
+
+  #LOCALIZATION
+  flutter_localizations:
+    sdk: flutter
+
+  #LOCAL STORAGE
+  shared_preferences: ^2.5.3
+
+  #UI
+  cached_network_image: ^3.3.1
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+
+  #CALL
+  flutter_callkit_incoming: ^2.0.0+2
+  tencent_calls_uikit: ^2.5.0
+  uuid: ^4.5.1
+
+  #TEST
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.4
+  golden_screenshot:
+  golden_toolkit: ^0.15.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.6.0
+  freezed:
+  json_serializable: ^6.10.0
+  retrofit_generator: ^10.2.0
+  flutter_gen_runner: ^5.10.0
+  injectable_generator: ^2.1.0
+
+flutter_gen:
+  output: lib/app/auto_gen/ # Optional (default: lib/gen/)
+  line_length: 80 # Optional (default: 80)
+flutter_intl:
+  enabled: true
+  output_dir: lib/app/auto_gen/
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+  module:
+    androidX: true
+    androidPackage: com.example.flutter_module
+    iosBundleIdentifier: com.example.flutterModule

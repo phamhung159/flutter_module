@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Attach to Flutter (auto-detect)",
+        "request": "attach",
+        "type": "dart",
+        "vmServiceUri": "http://127.0.0.1:55344/f4zv5U81Bu4=/" // set Dart VM service được sinh ra khi chạy debug project native
+      }
+    ]
+  }
