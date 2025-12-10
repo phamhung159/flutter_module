@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_module/app/di/injection.dart';
 import 'package:flutter_module/data/models/call_dto.dart';
+import 'package:flutter_module/main.dart';
 import 'package:flutter_module/presentation/call/bloc/call_bloc.dart';
 import 'package:flutter_module/repositories/models/call_model.dart';
 
@@ -226,6 +227,7 @@ class _OutgoingView extends StatelessWidget {
                     label: 'End Call',
                     color: Colors.red,
                     onTap: () {
+                      _dismissFlutterModule();
                       context.read<CallBloc>().add(
                         const CallEvent.endCall(),
                       );
@@ -240,6 +242,14 @@ class _OutgoingView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> _dismissFlutterModule() async {
+    try {
+      await sendChannel.invokeMethod('dismissFlutterModule');
+    } catch (e) {
+      debugPrint('Error dismissing Flutter module: $e');
+    }
   }
 
   String _getStatusText(CallStatus status) {

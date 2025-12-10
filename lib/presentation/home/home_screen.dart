@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_module/app/di/injection.dart';
+import 'package:flutter_module/main.dart';
 import 'package:flutter_module/presentation/home/bloc/home_bloc.dart';
 
 import 'widgets/user_list_widget.dart';
@@ -15,11 +16,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const MethodChannel _channel = MethodChannel('com.ntq.FlutterToNative');
+  
   
   Future<void> _dismissFlutterModule() async {
     try {
-      await _channel.invokeMethod('dismissFlutterModule');
+      await sendChannel.invokeMethod('dismissFlutterModule');
     } catch (e) {
       debugPrint('Error dismissing Flutter module: $e');
     }

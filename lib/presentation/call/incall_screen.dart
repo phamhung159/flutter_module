@@ -3,12 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_module/app/di/injection.dart';
 import 'package:flutter_module/data/models/call_dto.dart';
+import 'package:flutter_module/main.dart';
 import 'package:flutter_module/presentation/call/bloc/call_bloc.dart';
 import 'package:flutter_module/repositories/models/call_model.dart';
 
 class InCallScreen extends StatefulWidget {
   final Map<String, dynamic>? params;
-  
+
   const InCallScreen({super.key, this.params});
 
   @override
@@ -16,50 +17,32 @@ class InCallScreen extends StatefulWidget {
 }
 
 class _InCallScreenState extends State<InCallScreen> {
-  static const MethodChannel _channel = MethodChannel('com.ntq.FlutterToNative');
-  
+
   Future<void> _dismissFlutterModule() async {
     try {
-      await _channel.invokeMethod('dismissFlutterModule');
+      await sendChannel.invokeMethod('dismissFlutterModule');
     } catch (e) {
       debugPrint('Error dismissing Flutter module: $e');
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CallBloc>(
-      create: (context) {
-        final bloc = getIt<CallBloc>()..add(const CallEvent.initEvent());
-        
-        if (widget.params != null) {
-          final callId = widget.params!['callId'] as String?;
-          final callerId = widget.params!['callerId'] as String?;
-          final callerName = widget.params!['callerName'] as String?;
-          final callerAvatar = widget.params!['callerAvatar'] as String?;
-          final isVideo = widget.params!['isVideo'] as bool? ?? false;
-          
-          if (callId != null && callerId != null && callerName != null) {
-            bloc.add(CallEvent.receiveCall(
-              callId: callId,
-              callerId: callerId,
-              callerName: callerName,
-              callerAvatar: callerAvatar,
-              callType: isVideo ? CallType.video : CallType.audio,
-            ));
-          }
-        }
-        
-        return bloc;
-      },
-      child: _InCallView(onDismiss: _dismissFlutterModule),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('In Call'),
+        backgroundColor: Colors.blue,
+      ),
+      body: Center(child: TextButton(onPressed: () {
+        Navigator.of(context).pushNamed('/detail');
+      }, child: const Text('Push to home'))),
     );
   }
 }
 
 class _InCallView extends StatelessWidget {
   final VoidCallback onDismiss;
-  
+
   const _InCallView({required this.onDismiss});
 
   @override
@@ -77,7 +60,7 @@ class _InCallView extends StatelessWidget {
         },
         builder: (context, state) {
           final call = state.currentCall;
-          
+
           if (call == null) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.white),
@@ -88,18 +71,15 @@ class _InCallView extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 60),
-                
+
                 // Call Status
                 Text(
                   _getStatusText(call.status),
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 16,
-                  ),
+                  style: const TextStyle(color: Colors.white70, fontSize: 16),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Caller Info
                 CircleAvatar(
                   radius: 60,
@@ -118,9 +98,9 @@ class _InCallView extends StatelessWidget {
                         )
                       : null,
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 Text(
                   call.callerName,
                   style: const TextStyle(
@@ -129,21 +109,18 @@ class _InCallView extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                
+
                 const SizedBox(height: 10),
-                
+
                 // Call Duration (only show when connected)
                 if (state.isInCall)
                   Text(
                     _formatDuration(state.callDuration),
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 18,
-                    ),
+                    style: const TextStyle(color: Colors.white70, fontSize: 18),
                   ),
-                
+
                 const Spacer(),
-                
+
                 // Call Controls (only show when connected)
                 if (state.isInCall) ...[
                   Row(
@@ -159,7 +136,7 @@ class _InCallView extends StatelessWidget {
                           );
                         },
                       ),
-                      
+
                       _CallControlButton(
                         icon: state.isSpeakerOn
                             ? Icons.volume_up
@@ -172,7 +149,7 @@ class _InCallView extends StatelessWidget {
                           );
                         },
                       ),
-                      
+
                       if (call.callType == CallType.video)
                         _CallControlButton(
                           icon: state.isVideoEnabled
@@ -190,7 +167,7 @@ class _InCallView extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                 ],
-                
+
                 // Action Buttons
                 if (state.isIncoming) ...[
                   // Incoming call buttons
@@ -227,14 +204,12 @@ class _InCallView extends StatelessWidget {
                       label: 'End Call',
                       color: Colors.red,
                       onTap: () {
-                        context.read<CallBloc>().add(
-                          const CallEvent.endCall(),
-                        );
+                        context.read<CallBloc>().add(const CallEvent.endCall());
                       },
                     ),
                   ),
                 ],
-                
+
                 const SizedBox(height: 60),
               ],
             ),
@@ -318,10 +293,7 @@ class _CallControlButton extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           label,
-          style: const TextStyle(
-            color: Colors.white70,
-            fontSize: 12,
-          ),
+          style: const TextStyle(color: Colors.white70, fontSize: 12),
         ),
       ],
     );
@@ -352,15 +324,8 @@ class _ActionButton extends StatelessWidget {
           child: Container(
             width: 80,
             height: 80,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 36,
-            ),
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+            child: Icon(icon, color: Colors.white, size: 36),
           ),
         ),
         const SizedBox(height: 12),
@@ -376,4 +341,3 @@ class _ActionButton extends StatelessWidget {
     );
   }
 }
-
