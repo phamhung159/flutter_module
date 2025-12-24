@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_module/app/di/injection.dart';
 import 'package:flutter_module/data/models/call_dto.dart';
 import 'package:flutter_module/main.dart';
 import 'package:flutter_module/presentation/call/bloc/call_bloc.dart';

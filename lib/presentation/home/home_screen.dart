@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_module/app/di/injection.dart';
 import 'package:flutter_module/main.dart';
@@ -41,21 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.phone),
             tooltip: 'Test Call',
             onPressed: () {
-              Navigator.of(context).pushNamed('/outgoing', arguments: {
+              Navigator.of(context).pushNamed('/incall', arguments: {
                 'calleeId': 'user123',
                 'calleeName': 'Test User',
                 'isVideo': false,
-              });
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.videocam),
-            tooltip: 'Test Video Call',
-            onPressed: () {
-              Navigator.of(context).pushNamed('/outgoing', arguments: {
-                'calleeId': 'user456',
-                'calleeName': 'Video User',
-                'isVideo': true,
               });
             },
           ),
