@@ -46,6 +46,7 @@ This module now includes a complete call system with:
 - 📋 **Implementation**: [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)
 - 🔧 **iOS Fix**: [XCODE_16_SWIFT_ISSUE.md](XCODE_16_SWIFT_ISSUE.md) | [IOS_FIX_SCRIPTS.md](IOS_FIX_SCRIPTS.md)
 - 🔐 **iOS Permissions**: [IOS_PERMISSIONS.md](IOS_PERMISSIONS.md)
+- 📱 **Native iOS Integration**: [NATIVE_IOS_INTEGRATION.md](NATIVE_IOS_INTEGRATION.md) ⭐ NEW
 
 ### Routes
 - `/` - Home screen

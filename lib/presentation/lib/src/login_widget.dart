@@ -28,6 +28,16 @@ class _LoginWidgetState extends State<LoginWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: const Text('Login'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => _goBack(),
+        ),
+      ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Stack(
@@ -41,10 +51,14 @@ class _LoginWidgetState extends State<LoginWidget> {
     );
   }
 
+  _goBack() {
+    Navigator.of(context).pop();
+  }
+
   _getAppInfoWidget() {
     return Positioned(
       left: 0,
-      top: MediaQuery.of(context).size.height / 6,
+      top: MediaQuery.of(context).size.height / 8,
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -96,7 +110,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   _getLoginWidget() {
     return Positioned(
       left: 0,
-      top: MediaQuery.of(context).size.height * 2 / 5,
+      top: MediaQuery.of(context).size.height / 3,
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

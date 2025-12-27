@@ -16,17 +16,29 @@ class MainWidget extends StatefulWidget {
 class _MainWidgetState extends State<MainWidget> {
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Stack(
-            children: [_getUserInfo(), _getAppInfoWidget(), _getBtnWidget()],
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: const Text('TRTC Call'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => _showDialog(),
+            tooltip: 'Logout',
           ),
+        ],
+      ),
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [_getUserInfo(), _getAppInfoWidget(), _getBtnWidget()],
         ),
       ),
     );
@@ -35,7 +47,7 @@ class _MainWidgetState extends State<MainWidget> {
   _getUserInfo() {
     return Positioned(
       left: 10,
-      top: 50,
+      top: 10,
       child: Row(
         children: [
           Container(
@@ -91,7 +103,7 @@ class _MainWidgetState extends State<MainWidget> {
   _getAppInfoWidget() {
     return Positioned(
       left: 0,
-      top: 151,
+      top: 100,
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

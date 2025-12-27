@@ -20,9 +20,12 @@ class _SingleCallWidgetState extends State<SingleCallWidget> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Single Call'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
         leading: IconButton(
           onPressed: () => _goBack(),
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: Stack(children: [_getCallParamsWidget(), _getBtnWidget()]),

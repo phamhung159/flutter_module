@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_module/presentation/lib/generate/app_localizations.dart';
 import 'package:flutter_module/presentation/lib/src/join_group_call_widget.dart';
 import 'package:flutter_module/presentation/lib/src/settings/settings_config.dart';
 import 'package:flutter_module/presentation/lib/src/settings/settings_widget.dart';
@@ -23,62 +22,66 @@ class _GroupCallWidgetState extends State<GroupCallWidget> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('multi_call'),
+        title: const Text('Multi Call'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
         leading: IconButton(
-            onPressed: () => _goBack(),
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            )),
+          onPressed: () => _goBack(),
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
-      body: Stack(
-        children: [_getCallParamsWidget(), _getBtnWidget()],
-      ),
+      body: Stack(children: [_getCallParamsWidget(), _getBtnWidget()]),
     );
   }
 
   _getCallParamsWidget() {
     return Positioned(
-        top: 20,
-        left: 10,
-        width: MediaQuery.of(context).size.width - 20,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'callee_id_list',
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black),
+      top: 20,
+      left: 10,
+      width: MediaQuery.of(context).size.width - 20,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'callee_id_list',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
                 ),
-                SizedBox(
-                    width: 200,
-                    child: TextField(
-                        autofocus: true,
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                          hintText: 'separated',
-                          border: InputBorder.none,
-                        ),
-                        onChanged: ((value) => _userIDsStr = value)))
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'media_type',
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black),
+              ),
+              SizedBox(
+                width: 200,
+                child: TextField(
+                  autofocus: true,
+                  textAlign: TextAlign.right,
+                  decoration: InputDecoration(
+                    hintText: 'separated',
+                    border: InputBorder.none,
+                  ),
+                  onChanged: ((value) => _userIDsStr = value),
                 ),
-                Row(children: [
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'media_type',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
+                ),
+              ),
+              Row(
+                children: [
                   Row(
                     children: [
                       Checkbox(
@@ -93,10 +96,11 @@ class _GroupCallWidgetState extends State<GroupCallWidget> {
                       Text(
                         'media_type',
                         style: const TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black),
+                          fontSize: 16,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black,
+                        ),
                       ),
                     ],
                   ),
@@ -115,118 +119,132 @@ class _GroupCallWidgetState extends State<GroupCallWidget> {
                       Text(
                         'voice_call',
                         style: const TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                ])
-              ],
-            ),
-            ExpansionTile(
-              title: Padding(
-                padding: const EdgeInsets.only(left: 0),
-                child: Text(
-                  'optional_parameters',
-                ),
-              ),
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'group_id',
-                      style: const TextStyle(
                           fontSize: 16,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.normal,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                        width: 200,
-                        child: TextField(
-                            autofocus: true,
-                            textAlign: TextAlign.right,
-                            decoration: InputDecoration(
-                              hintText: _groupId.isNotEmpty
-                                  ? _groupId
-                                  : 'enter_group_id',
-                              border: InputBorder.none,
-                            ),
-                            onChanged: ((value) => _groupId = value)))
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 50),
-            InkWell(
-              onTap: () => _goSettings(),
-              child: Text(
-                '${'settings'} >',
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff056DF6)),
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            )
-          ],
-        ));
+            ],
+          ),
+          ExpansionTile(
+            title: Padding(
+              padding: const EdgeInsets.only(left: 0),
+              child: Text('optional_parameters'),
+            ),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'group_id',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 200,
+                    child: TextField(
+                      autofocus: true,
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        hintText: _groupId.isNotEmpty
+                            ? _groupId
+                            : 'enter_group_id',
+                        border: InputBorder.none,
+                      ),
+                      onChanged: ((value) => _groupId = value),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 50),
+          InkWell(
+            onTap: () => _goSettings(),
+            child: Text(
+              '${'settings'} >',
+              style: const TextStyle(
+                fontSize: 16,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff056DF6),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   _getBtnWidget() {
     return Positioned(
-        left: 0,
-        bottom: 50,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Visibility(
-              visible: false,
-              child: InkWell(
-                onTap: () => _joinGroupCall(),
-                child: Text(
-                  'join_multi_call',
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff056DF6)),
+      left: 0,
+      bottom: 50,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Visibility(
+            visible: false,
+            child: InkWell(
+              onTap: () => _joinGroupCall(),
+              child: Text(
+                'join_multi_call',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff056DF6),
                 ),
               ),
             ),
-            const SizedBox(height: 30),
-            SizedBox(
-              height: 52,
-              width: MediaQuery.of(context).size.width * 5 / 6,
-              child: ElevatedButton(
-                  onPressed: () => _call(),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(const Color(0xff056DF6)),
-                    shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+          ),
+          const SizedBox(height: 30),
+          SizedBox(
+            height: 52,
+            width: MediaQuery.of(context).size.width * 5 / 6,
+            child: ElevatedButton(
+              onPressed: () => _call(),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                  const Color(0xff056DF6),
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.call),
-                      const SizedBox(width: 10),
-                      Text(
-                        'call',
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      ),
-                    ],
-                  )),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.call),
+                  const SizedBox(width: 10),
+                  Text(
+                    'call',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 
   _goBack() {
@@ -235,8 +253,11 @@ class _GroupCallWidgetState extends State<GroupCallWidget> {
 
   _call() {
     _userIDs = _userIDsStr.split(',');
-    TUICallKit.instance.calls(_userIDs,
-        _isAudioCall ? TUICallMediaType.audio : TUICallMediaType.video, _createTUICallParams());
+    TUICallKit.instance.calls(
+      _userIDs,
+      _isAudioCall ? TUICallMediaType.audio : TUICallMediaType.video,
+      _createTUICallParams(),
+    );
   }
 
   TUICallParams _createTUICallParams() {
@@ -254,18 +275,24 @@ class _GroupCallWidgetState extends State<GroupCallWidget> {
   }
 
   _goSettings() {
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) {
-        return const SettingsWidget();
-      },
-    ));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const SettingsWidget();
+        },
+      ),
+    );
   }
 
   _joinGroupCall() {
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) {
-        return const JoinInGroupCallWidget();
-      },
-    ));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const JoinInGroupCallWidget();
+        },
+      ),
+    );
   }
 }
