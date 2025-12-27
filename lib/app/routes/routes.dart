@@ -11,14 +11,15 @@ class AppRoutes {
     final uri = Uri.parse(settings.name ?? "/");
 
     Map<String, dynamic> params = {};
-    
+
     if (settings.arguments != null) {
       if (settings.arguments is Map<String, dynamic>) {
         params = settings.arguments as Map<String, dynamic>;
       }
     } else if (uri.queryParameters.containsKey("data")) {
       try {
-        params = jsonDecode(uri.queryParameters["data"]!) as Map<String, dynamic>;
+        params =
+            jsonDecode(uri.queryParameters["data"]!) as Map<String, dynamic>;
       } catch (e) {
         debugPrint("❌ JSON decode error: $e");
       }
@@ -36,10 +37,13 @@ class AppRoutes {
       case "/incall":
         return MaterialPageRoute(builder: (_) => InCallScreen(params: params));
       case "/outgoing":
-        return MaterialPageRoute(builder: (_) => OutgoingScreen(params: params));
+        return MaterialPageRoute(
+          builder: (_) => OutgoingScreen(params: params),
+        );
       default:
         return MaterialPageRoute(
-          builder: (_) => const Scaffold(body: Center(child: Text("Unknown route"))),
+          builder: (_) =>
+              const Scaffold(body: Center(child: Text("Unknown route"))),
         );
     }
   }

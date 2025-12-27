@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_module/app/di/injection.dart';
 import 'package:flutter_module/main.dart';
 import 'package:flutter_module/presentation/home/bloc/home_bloc.dart';
+import 'package:flutter_module/presentation/lib/src/login_widget.dart';
 
 import 'widgets/user_list_widget.dart';
 
@@ -40,11 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.phone),
             tooltip: 'Test Call',
             onPressed: () {
-              Navigator.of(context).pushNamed('/incall', arguments: {
-                'calleeId': 'user123',
-                'calleeName': 'Test User',
-                'isVideo': false,
-              });
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginWidget()));
             },
           ),
         ],

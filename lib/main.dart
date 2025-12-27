@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_module/data/services/callkit_service.dart';
+import 'package:tencent_calls_uikit/tencent_calls_uikit.dart';
 import 'app/routes/routes.dart';
 import 'app/di/injection.dart';
 import 'presentation/call/incall_screen.dart';
@@ -59,6 +60,7 @@ Future<Widget> _mainWidget(String initialRoute) async {
   return MaterialApp(
     navigatorKey: navigatorKey,
     onGenerateRoute: AppRoutes.onGenerateRoute,
+    navigatorObservers: [TUICallKit.navigatorObserver],
     home: initialRoute == '/' ? const HomeScreen() : InCallScreen(),
   );
 }
