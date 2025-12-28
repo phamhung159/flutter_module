@@ -24,9 +24,9 @@ class _SingleCallWidgetState extends State<SingleCallWidget> {
         foregroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          onPressed: () => _goBack(),
+            onPressed: () => _goBack(),
           icon: const Icon(Icons.arrow_back),
-        ),
+      ),
       ),
       body: Stack(children: [_getCallParamsWidget(), _getBtnWidget()]),
     );
@@ -34,47 +34,47 @@ class _SingleCallWidgetState extends State<SingleCallWidget> {
 
   _getCallParamsWidget() {
     return Positioned(
-      top: 38,
-      left: 10,
-      width: MediaQuery.of(context).size.width - 20,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+        top: 38,
+        left: 10,
+        width: MediaQuery.of(context).size.width - 20,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
               const Text(
                 'User ID',
                 style: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
                   color: Colors.black,
                 ),
-              ),
-              SizedBox(
-                width: 200,
-                child: TextField(
-                  autofocus: true,
-                  textAlign: TextAlign.right,
+                ),
+                SizedBox(
+                    width: 200,
+                    child: TextField(
+                        autofocus: true,
+                        textAlign: TextAlign.right,
                   decoration: const InputDecoration(
                     hintText: 'Enter Callee ID',
-                    border: InputBorder.none,
-                  ),
+                          border: InputBorder.none,
+                        ),
                   onChanged: ((value) => _calledUserId = value),
                 ),
               ),
-            ],
-          ),
+              ],
+            ),
           const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
               const Text(
                 'Media Type',
                 style: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
                   color: Colors.black,
                 ),
               ),
@@ -94,9 +94,9 @@ class _SingleCallWidgetState extends State<SingleCallWidget> {
                       const Text(
                         'Video Call',
                         style: TextStyle(
-                          fontSize: 16,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
                           color: Colors.black,
                         ),
                       ),
@@ -117,9 +117,9 @@ class _SingleCallWidgetState extends State<SingleCallWidget> {
                       const Text(
                         'Voice Call',
                         style: TextStyle(
-                          fontSize: 16,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
                           color: Colors.black,
                         ),
                       ),
@@ -127,68 +127,68 @@ class _SingleCallWidgetState extends State<SingleCallWidget> {
                   ),
                 ],
               ),
-            ],
-          ),
-          const SizedBox(height: 45),
-          InkWell(
-            onTap: () => _goSettings(),
+              ],
+            ),
+            const SizedBox(height: 45),
+            InkWell(
+              onTap: () => _goSettings(),
             child: const Text(
               'Settings >',
               style: TextStyle(
-                fontSize: 16,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
                 color: Color(0xff056DF6),
               ),
             ),
           ),
-        ],
+          ],
       ),
     );
   }
 
   _getBtnWidget() {
     return Positioned(
-      left: 0,
-      bottom: 50,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 60,
-            width: MediaQuery.of(context).size.width * 5 / 6,
-            child: ElevatedButton(
-              onPressed: () => _call(),
-              style: ButtonStyle(
+        left: 0,
+        bottom: 50,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 60,
+              width: MediaQuery.of(context).size.width * 5 / 6,
+              child: ElevatedButton(
+                  onPressed: () => _call(),
+                  style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
                   const Color(0xff056DF6),
                 ),
-                shape: MaterialStateProperty.all(
+                    shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.call),
-                  const SizedBox(width: 10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.call),
+                      const SizedBox(width: 10),
                   const Text(
                     'Call',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
                       color: Colors.white,
                     ),
-                  ),
-                ],
+                      ),
+                    ],
               ),
             ),
-          ),
-        ],
+            ),
+          ],
       ),
     );
   }
@@ -222,9 +222,9 @@ class _SingleCallWidgetState extends State<SingleCallWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) {
-          return const SettingsWidget();
-        },
+      builder: (context) {
+        return const SettingsWidget();
+      },
       ),
     );
   }

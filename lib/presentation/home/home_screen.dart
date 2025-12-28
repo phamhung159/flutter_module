@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_module/app/di/injection.dart';
 import 'package:flutter_module/main.dart';
+import 'package:flutter_module/presentation/call_engine_demo/call_engine_manager.dart';
+import 'package:flutter_module/presentation/call_engine_demo/outgoing_demo_screen.dart';
 import 'package:flutter_module/presentation/home/bloc/home_bloc.dart';
 import 'package:flutter_module/presentation/lib/debug/generate_test_user_sig.dart';
-import 'package:flutter_module/presentation/lib/src/login_widget.dart';
 import 'package:flutter_module/presentation/lib/src/observer_functions.dart';
 import 'package:flutter_module/presentation/lib/src/settings/settings_config.dart';
 import 'package:tencent_calls_uikit/tencent_calls_uikit.dart';
@@ -40,12 +41,20 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: _dismissFlutterModule,
         ),
         actions: [
+          // TUICallKit (built-in UI) demo
           IconButton(
             icon: const Icon(Icons.phone),
-            tooltip: 'Test Call',
+            tooltip: 'TUICallKit Demo',
             onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginWidget()));
               _login();
+            },
+          ),
+          // Custom UI with tencent_calls_engine demo
+          IconButton(
+            icon: const Icon(Icons.video_call),
+            tooltip: 'Custom Call Demo',
+            onPressed: () {
+              _startCustomCallDemo();
             },
           ),
         ],
@@ -114,5 +123,48 @@ class _HomeScreenState extends State<HomeScreen> {
     params.offlinePushInfo = SettingsConfig.offlinePushInfo;
     params.userData = SettingsConfig.extendInfo;
     return params;
+  }
+
+  /// Start custom call demo using tencent_calls_engine
+  _startCustomCallDemo() async {
+    final userId = '123';
+    final calleeId = '456';
+
+    // Login first
+    final result = await TUICallKit.instance.login(
+      GenerateTestUserSig.sdkAppId,
+      userId,
+      GenerateTestUserSig.genTestSig(userId),
+    );
+
+    if (result.code.isEmpty) {
+      // Initialize CallEngineManager with navigator key
+      final navigatorKey = GlobalKey<NavigatorState>();
+      CallEngineManager().init(navigatorKey);
+
+      // Setup observer
+      setObserverFunction(callsEnginePlugin: TUICallEngine.instance);
+      SettingsConfig.userId = userId;
+
+      // Navigate to OutgoingDemoScreen
+      if (mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => OutgoingDemoScreen(
+              calleeId: calleeId,
+              calleeName: 'User $calleeId',
+              mediaType: TUICallMediaType.video,
+            ),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Login failed: ${result.message}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

@@ -57,61 +57,61 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   _getAppInfoWidget() {
     return Positioned(
-      left: 0,
+        left: 0,
       top: MediaQuery.of(context).size.height / 8,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
               Image.asset('images/qcloudlog.png', width: 70),
-              const SizedBox(width: 20),
-              Column(
-                children: [
-                  SizedBox(
+                const SizedBox(width: 20),
+                Column(
+                  children: [
+                    SizedBox(
                     width:
                         _calculateTextWidth(
                               'trtc',
                               const TextStyle(fontSize: 32),
                             ) >
-                            (MediaQuery.of(context).size.width - 70 - 10)
+                                (MediaQuery.of(context).size.width - 70 - 10)
                         ? _calculateTextWidth(
                                 'trtc',
                                 const TextStyle(fontSize: 32),
                               ) /
-                              2
-                        : _calculateTextWidth(
+                                2
+                            : _calculateTextWidth(
                             'trtc',
                             const TextStyle(fontSize: 32),
                           ),
-                    child: Text(
-                      'trtc',
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 30,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w400,
+                        child: Text(
+                          'trtc',
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 30,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w400,
                         color: Colors.black,
                       ),
                     ),
                   ),
-                ],
+                  ],
               ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
       ),
     );
   }
 
   _getLoginWidget() {
     return Positioned(
-      left: 0,
+        left: 0,
       top: MediaQuery.of(context).size.height / 3,
-      width: MediaQuery.of(context).size.width,
+        width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -137,14 +137,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
                 const SizedBox(width: 10),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width - 160,
-                  child: TextField(
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: 'enter_user_id',
-                      border: InputBorder.none,
-                      labelStyle: const TextStyle(fontSize: 16),
-                    ),
+                    width: MediaQuery.of(context).size.width - 160,
+                    child: TextField(
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          hintText: 'enter_user_id',
+                          border: InputBorder.none,
+                          labelStyle: const TextStyle(fontSize: 16),
+                        ),
                     onChanged: ((value) => _userId = value),
                   ),
                 ),
@@ -170,9 +170,9 @@ class _LoginWidgetState extends State<LoginWidget> {
               child: Text(
                 'login',
                 style: const TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w500,
                   color: Colors.white,
                 ),
               ),
@@ -185,100 +185,100 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   _getQuickAccessWidget() {
     return Positioned(
-      left: 0,
-      bottom: 54,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width / 3 - 10,
-                height: 1,
+        left: 0,
+        bottom: 54,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 3 - 10,
+                  height: 1,
                 decoration: const BoxDecoration(color: Colors.grey),
-              ),
-              const SizedBox(width: 5),
-              Text(
-                'quick_access',
-                style: const TextStyle(
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  'quick_access',
+                  style: const TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.normal,
                   color: Colors.black,
                 ),
-              ),
-              const SizedBox(width: 5),
-              Container(
-                width: MediaQuery.of(context).size.width / 3 - 10,
-                height: 1,
+                ),
+                const SizedBox(width: 5),
+                Container(
+                  width: MediaQuery.of(context).size.width / 3 - 10,
+                  height: 1,
                 decoration: const BoxDecoration(color: Colors.grey),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const SizedBox(width: 1),
-              InkWell(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width / 4 - 20,
-                  child: Text(
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    'package_purchase',
+                  ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const SizedBox(width: 1),
+                InkWell(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 4 - 20,
+                    child: Text(
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      'package_purchase',
                     style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xff056DF6),
                     ),
                   ),
                 ),
-                onTap: () => _lanuchURL(0),
-              ),
-              InkWell(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width / 4 - 20,
-                  child: Text(
-                    'integration',
+                  onTap: () => _lanuchURL(0),
+                ),
+                InkWell(
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 4 - 20,
+                      child: Text(
+                        'integration',
                     style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xff056DF6),
                     ),
                   ),
                 ),
-                onTap: () => _lanuchURL(1),
-              ),
-              InkWell(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width / 4 - 20,
-                  child: Text(
-                    'api_docs',
+                  onTap: () => _lanuchURL(1),
+                ),
+                InkWell(
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 4 - 20,
+                      child: Text(
+                        'api_docs',
                     style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xff056DF6),
                     ),
                   ),
                 ),
-                onTap: () => _lanuchURL(2),
-              ),
-              InkWell(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width / 4 - 20,
-                  child: Text(
-                    'common_problems',
+                  onTap: () => _lanuchURL(2),
+                ),
+                InkWell(
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 4 - 20,
+                      child: Text(
+                        'common_problems',
                     style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xff056DF6),
                     ),
                   ),
                 ),
-                onTap: () => _lanuchURL(3),
-              ),
-              const SizedBox(width: 1),
-            ],
-          ),
-        ],
+                  onTap: () => _lanuchURL(3),
+                ),
+                const SizedBox(width: 1),
+              ],
+            ),
+          ],
       ),
     );
   }
@@ -351,9 +351,9 @@ class _LoginWidgetState extends State<LoginWidget> {
   _enterProfileWidget() {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) {
-          return const ProfileWidget();
-        },
+      builder: (context) {
+        return const ProfileWidget();
+      },
       ),
       (route) => false,
     );
@@ -362,9 +362,9 @@ class _LoginWidgetState extends State<LoginWidget> {
   _enterMainWidget() {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) {
-          return const MainWidget();
-        },
+      builder: (context) {
+        return const MainWidget();
+      },
       ),
       (route) => false,
     );

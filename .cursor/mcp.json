@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "tencent-rtc": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@tencent-rtc/mcp"
+            ],
+            "env": {
+                "SDKAPPID": "20031940",
+                "SECRETKEY": "113a6f535e978b705fe8bf3f02926f923a9daef400ee1b1bf5c6abcb12efef90"
+            }
+        }
+    }
+}
