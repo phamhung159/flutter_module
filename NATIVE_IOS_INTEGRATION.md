@@ -1,5 +1,116 @@
 # Native iOS Integration Guide
 
+## 📋 Table of Contents
+- [MissingPluginException Fix](#-problem-missingpluginexception)
+- [Float Window (Picture-in-Picture)](#-float-window-picture-in-picture)
+
+---
+
+## 🖼️ Float Window (Picture-in-Picture)
+
+Khi user đang trong cuộc gọi video/audio trong Flutter module và muốn quay về native app, float window sẽ hiển thị mini call view trên tất cả screens.
+
+### Architecture Flow
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                        Flutter Module                             │
+├──────────────────────────────────────────────────────────────────┤
+│  InCallScreen                                                     │
+│       │                                                           │
+│       ▼ [Click Float Button]                                      │
+│  NativeFloatWindowService.showFloatWindow()                       │
+│       │                                                           │
+│       ▼ (Platform Channel: flutter_module/float_window)           │
+└───────┼──────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                      Native iOS App                               │
+├──────────────────────────────────────────────────────────────────┤
+│  FloatWindowManager                                               │
+│       │                                                           │
+│       ▼ [Create UIWindow with .alert+1 windowLevel]               │
+│  FloatCallViewController                                          │
+│       │                                                           │
+│       │ ◄──── [Float window visible on ALL screens]               │
+│       │                                                           │
+│       ▼ [User taps float window]                                  │
+│  onFloatWindowTapped()                                            │
+│       │                                                           │
+│       ▼ (Post Notification: OpenFlutterInCallScreen)              │
+│       │                                                           │
+│       ▼ (Platform Channel: flutter_module/navigation)             │
+└───────┼──────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                        Flutter Module                             │
+├──────────────────────────────────────────────────────────────────┤
+│  Navigate to InCallScreen (call still active)                     │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+### Files Created
+
+**Native iOS:**
+- `FloatWindowManager.swift` - Quản lý float window và platform channel
+- `FloatCallViewController.swift` - UI của mini call view
+
+**Flutter:**
+- `lib/data/services/native_float_window_service.dart` - Service giao tiếp với native
+
+### Usage in Flutter
+
+```dart
+import 'package:flutter_module/data/services/native_float_window_service.dart';
+
+final floatWindowService = NativeFloatWindowService();
+
+// Show float window
+await floatWindowService.showFloatWindow(
+  userId: 'John',
+  duration: 120, // seconds
+  isVideo: true,
+);
+
+// Hide float window
+await floatWindowService.hideFloatWindow();
+
+// Update float window
+await floatWindowService.updateFloatWindow(
+  duration: 180,
+  status: 'On Hold',
+  isMuted: true,
+);
+
+// Listen for events
+floatWindowService.onFloatWindowTapped.listen((event) {
+  // User tapped float window - navigate to call screen
+  Navigator.pushNamed(context, '/incall', arguments: {
+    'userId': event.userId,
+    'duration': event.duration,
+    'isVideo': event.isVideo,
+  });
+});
+
+floatWindowService.onFloatWindowClosed.listen((_) {
+  // User closed float window - end call
+});
+```
+
+### Key Features
+
+1. **UIWindow với windowLevel cao**: Float window sử dụng `UIWindow.Level.alert + 1` để hiển thị trên tất cả windows, kể cả khi navigate giữa native screens.
+
+2. **Draggable**: Float window có thể kéo di chuyển và snap vào cạnh màn hình.
+
+3. **Call state preservation**: Duration và call info được giữ nguyên khi chuyển đổi.
+
+4. **Pulse animation**: Avatar có hiệu ứng pulse để biểu thị cuộc gọi đang hoạt động.
+
+---
+
 ## 🚨 Problem: MissingPluginException
 
 When embedding Flutter module in native iOS app, you get:

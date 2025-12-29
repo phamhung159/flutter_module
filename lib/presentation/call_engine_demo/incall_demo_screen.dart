@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_module/data/services/native_float_window_service.dart';
 import 'package:flutter_module/presentation/call_engine_demo/call_engine_manager.dart';
 import 'package:tencent_calls_uikit/tencent_calls_uikit.dart';
 
@@ -29,6 +31,7 @@ class _InCallDemoScreenState extends State<InCallDemoScreen> {
 
   // Call state
   int _duration = 0;
+  bool _hasNavigatedAway = false; // Guard to prevent double navigation
   
 
   @override
@@ -67,6 +70,12 @@ class _InCallDemoScreenState extends State<InCallDemoScreen> {
   }
 
   void _showCallEndedMessage() {
+    // Guard to prevent multiple navigation attempts
+    if (_hasNavigatedAway) {
+      return;
+    }
+    _hasNavigatedAway = true;
+    
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text('Call ended'),
@@ -75,18 +84,30 @@ class _InCallDemoScreenState extends State<InCallDemoScreen> {
       ),
     );
 
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () async {
       if (mounted) {
-        Navigator.of(context).pop();
+        final navigator = Navigator.of(context);
+        final canPopResult = navigator.canPop();
+        
+        if (canPopResult) {
+          navigator.pop();
+        } else {
+          // No previous route - dismiss Flutter module
+          const channel = MethodChannel('com.ntq.FlutterToNative');
+          try {
+            await channel.invokeMethod('dismissFlutterModule');
+          } catch (e) {
+            debugPrint('Error dismissing Flutter module: $e');
+          }
+        }
       }
     });
   }
 
   void _hangup() async {
+    // Only call hangup - navigation is handled by _showCallEndedMessage()
+    // when state changes to ended (avoids double navigation)
     await _callManager.hangup();
-    if (mounted) {
-      Navigator.of(context).pop();
-    }
   }
 
   void _toggleControls() {
@@ -105,18 +126,48 @@ class _InCallDemoScreenState extends State<InCallDemoScreen> {
   }
 
   void _toggleFloatWindow() async {
-    // Store navigation callback in CallEngineManager before popping
-    _callManager.enterFloatWindowMode(() {
-      // This will be called when user taps on the float overlay to return
-    });
+    debugPrint('🖼️ InCallDemoScreen._toggleFloatWindow - using NativeFloatWindowService');
     
-    // Pop this screen and show a Flutter overlay instead of native float window
-    // This keeps the call running while showing a mini overlay
-    if (mounted) {
-      // Show the float overlay first
-      _showFloatOverlay();
-      // Then pop this screen
-      Navigator.of(context).pop();
+    // Use native float window instead of Flutter overlay
+    final floatWindowService = NativeFloatWindowService();
+    final success = await floatWindowService.showFloatWindow(
+      userId: widget.remoteUserId,
+      duration: _duration,
+      isVideo: widget.mediaType == TUICallMediaType.video,
+    );
+    
+    if (success) {
+      // Store navigation callback in CallEngineManager
+      _callManager.enterFloatWindowMode(() {
+        // This will be called when user taps on the float window to return
+      });
+      
+      if (mounted) {
+        final navigator = Navigator.of(context);
+        if (navigator.canPop()) {
+          // Normal flow: InCallDemo was pushed from Home
+          // Pop back to Home Flutter (float window stays visible)
+          // User will press Back on Home to go to native
+          navigator.pop();
+        } else {
+          // Came from float window tap (Home was replaced with InCallDemo)
+          // Dismiss Flutter to go back to native with float window
+          const channel = MethodChannel('com.ntq.FlutterToNative');
+          try {
+            await channel.invokeMethod('dismissFlutterModule');
+          } catch (e) {
+            debugPrint('Error dismissing Flutter module: $e');
+          }
+        }
+      }
+    } else {
+      // Fallback to Flutter overlay if native fails
+      debugPrint('⚠️ Native float window failed, falling back to Flutter overlay');
+      _callManager.enterFloatWindowMode(() {});
+      if (mounted) {
+        _showFloatOverlay();
+        Navigator.of(context).pop();
+      }
     }
   }
   
@@ -408,10 +459,7 @@ class _InCallDemoScreenState extends State<InCallDemoScreen> {
         child: Row(
           children: [
             // Back button
-            IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: _hangup,
-            ),
+            
             const SizedBox(width: 12),
             // Call info
             Expanded(

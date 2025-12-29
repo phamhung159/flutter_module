@@ -30,6 +30,7 @@ class _OutgoingDemoScreenState extends State<OutgoingDemoScreen>
   late Animation<double> _pulseAnimation;
 
   CallEngineState _currentState = CallEngineState.outgoing;
+  bool _hasNavigated = false; // Guard to prevent double navigation
 
   @override
   void initState() {
@@ -81,6 +82,12 @@ class _OutgoingDemoScreenState extends State<OutgoingDemoScreen>
   }
 
   void _navigateToInCall() {
+    // Guard to prevent double navigation (state change may fire multiple times)
+    if (_hasNavigated) {
+      return;
+    }
+    _hasNavigated = true;
+    
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => InCallDemoScreen(
@@ -122,7 +129,8 @@ class _OutgoingDemoScreenState extends State<OutgoingDemoScreen>
     );
 
     Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) {
+      if (mounted && !_hasNavigated) {
+        _hasNavigated = true;
         Navigator.of(context).pop();
       }
     });
@@ -130,7 +138,8 @@ class _OutgoingDemoScreenState extends State<OutgoingDemoScreen>
 
   void _hangup() async {
     await _callManager.hangup();
-    if (mounted) {
+    if (mounted && !_hasNavigated) {
+      _hasNavigated = true;
       Navigator.of(context).pop();
     }
   }

@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:tencent_calls_uikit/tencent_calls_uikit.dart';
 import '../../presentation/detail_screen.dart';
 import '../../presentation/form_screen.dart';
 import '../../presentation/home/home_screen.dart';
 import '../../presentation/call/incall_screen.dart';
 import '../../presentation/call/outgoing_screen.dart';
+import '../../presentation/call_engine_demo/incall_demo_screen.dart';
 
 class AppRoutes {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -36,6 +38,16 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => FormScreen());
       case "/incall":
         return MaterialPageRoute(builder: (_) => InCallScreen(params: params));
+      case "/incall_demo":
+        // Route for InCallDemoScreen - used when returning from float window
+        final userId = params['userId'] as String? ?? '';
+        final isVideo = params['isVideo'] as bool? ?? true;
+        return MaterialPageRoute(
+          builder: (_) => InCallDemoScreen(
+            remoteUserId: userId,
+            mediaType: isVideo ? TUICallMediaType.video : TUICallMediaType.audio,
+          ),
+        );
       case "/outgoing":
         return MaterialPageRoute(
           builder: (_) => OutgoingScreen(params: params),

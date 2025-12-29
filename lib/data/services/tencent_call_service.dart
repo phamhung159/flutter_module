@@ -1,22 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tencent_calls_uikit/tencent_calls_uikit.dart';
-
-// #region agent log helper
-void _tencentDebugLog(String location, String message, Map<String, dynamic> data, String hypothesisId) {
-  final logEntry = '{"location":"$location","message":"$message","data":${data.toString().replaceAll("'", '"')},"timestamp":${DateTime.now().millisecondsSinceEpoch},"sessionId":"debug-session","hypothesisId":"$hypothesisId"}\n';
-  debugPrint('📝 TENCENT_SERVICE: $logEntry');
-  try {
-    final file = File('/Users/mac/Documents/Flutter/Projects/flutter_module/.cursor/debug.log');
-    file.parent.createSync(recursive: true);
-    file.writeAsStringSync(logEntry, mode: FileMode.append);
-  } catch (e) {
-    debugPrint('Failed to write log: $e');
-  }
-}
-// #endregion
 
 @lazySingleton
 class TencentCallService {
@@ -32,19 +17,8 @@ class TencentCallService {
     required String userId,
     required String userSig,
   }) async {
-    // #region agent log
-    _tencentDebugLog('tencent_call_service.dart:initialize', 'initialize() entry', {
-      'sdkAppId': sdkAppId,
-      'userId': userId,
-      '_isInitialized': _isInitialized,
-    }, 'C');
-    // #endregion
-    
     if (_isInitialized) {
       debugPrint('⚠️ TencentCallService already initialized');
-      // #region agent log
-      _tencentDebugLog('tencent_call_service.dart:initialize', 'Already initialized, skipping', {}, 'C');
-      // #endregion
       return;
     }
 
@@ -58,43 +32,21 @@ class TencentCallService {
       debugPrint('✅ Tencent login successful');
       _isInitialized = true;
       _eventController.add(const TencentCallEvent.initialized());
-      
-      // #region agent log
-      _tencentDebugLog('tencent_call_service.dart:initialize', 'Login successful, setting up observer', {}, 'C');
-      // #endregion
 
       _setupCallObserver();
-      
-      // #region agent log
-      _tencentDebugLog('tencent_call_service.dart:initialize', 'Observer setup complete', {}, 'C');
-      // #endregion
     } catch (e) {
       debugPrint('❌ Failed to initialize Tencent: $e');
-      // #region agent log
-      _tencentDebugLog('tencent_call_service.dart:initialize', 'Initialize FAILED', {
-        'error': e.toString(),
-      }, 'C');
-      // #endregion
       _eventController.add(TencentCallEvent.error(-1, e.toString()));
     }
   }
 
   void _setupCallObserver() {
     debugPrint('📞 Setting up Tencent call observer...');
-    // #region agent log
-    _tencentDebugLog('tencent_call_service.dart:_setupCallObserver', 'Setting up observer', {}, 'C');
-    // #endregion
 
     TUICallEngine.instance.addObserver(
       TUICallObserver(
         onError: (code, message) {
           debugPrint('❌ Tencent call error: $code - $message');
-          // #region agent log
-          _tencentDebugLog('tencent_call_service.dart:onError', 'SDK ERROR CALLBACK', {
-            'errorCode': code,
-            'errorMessage': message,
-          }, 'D');
-          // #endregion
           _eventController.add(TencentCallEvent.error(code, message));
         },
 
@@ -175,19 +127,8 @@ class TencentCallService {
   }
 
   Future<void> call({required String userId, required bool isVideo}) async {
-    // #region agent log
-    _tencentDebugLog('tencent_call_service.dart:call', 'call() entry', {
-      'userId': userId,
-      'isVideo': isVideo,
-      '_isInitialized': _isInitialized,
-    }, 'C');
-    // #endregion
-    
     if (!_isInitialized) {
       debugPrint('⚠️ TencentCallService chưa được khởi tạo');
-      // #region agent log
-      _tencentDebugLog('tencent_call_service.dart:call', 'ABORT: not initialized', {}, 'C');
-      // #endregion
       _eventController.add(
         TencentCallEvent.error(-1, 'Service not initialized'),
       );
@@ -201,28 +142,12 @@ class TencentCallService {
           ? TUICallMediaType.video
           : TUICallMediaType.audio;
 
-      // #region agent log
-      _tencentDebugLog('tencent_call_service.dart:call', 'Before TUICallKit.instance.calls()', {
-        'userId': userId,
-        'mediaType': callMediaType.name,
-      }, 'C,D');
-      // #endregion
-
       await TUICallKit.instance.calls([userId], callMediaType);
-
-      // #region agent log
-      _tencentDebugLog('tencent_call_service.dart:call', 'After TUICallKit.instance.calls() - returned', {}, 'C,D');
-      // #endregion
 
       debugPrint('✅ Call initiated successfully to $userId');
       _eventController.add(const TencentCallEvent.callBegan());
     } catch (e) {
       debugPrint('❌ Exception when making call: $e');
-      // #region agent log
-      _tencentDebugLog('tencent_call_service.dart:call', 'EXCEPTION', {
-        'error': e.toString(),
-      }, 'C,D');
-      // #endregion
       _eventController.add(TencentCallEvent.error(-1, e.toString()));
     }
   }
